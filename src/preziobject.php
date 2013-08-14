@@ -42,8 +42,8 @@ class PreziObject {
 class TextObject extends PreziObject {
 	function __construct($id, $type, $x, $y, $r, $s, $class, $obj){
 		parent::__construct($id, $type, $x, $y, $r, $s, $class, $obj);
-		$this->width = abs((float)$obj->width) / $GLOBALS['config']['scale'];
-		$this->height = abs((float)$obj->height) / $GLOBALS['config']['scale'];
+		$this->width = abs((float)$obj->width);
+		$this->height = abs((float)$obj->height);
 		$this->step = false;
 	}
 	protected function getAdditionalCss(){
@@ -96,7 +96,7 @@ class ShapeObject extends PreziObject {
 			list($x1,$y1) = explode(" ",$this->obj->geom->sp);
 			list($x2,$y2) = explode(" ", $this->obj->geom->ep);
 			return '<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-  <line class="'.$this->geom.'" x1="'.($x1*$GLOBALS['config']['scale']).'" y1="'.($y1*$GLOBALS['config']['scale']).'" x2="'.($x2*$GLOBALS['config']['scale']).'" y2="'.($y2*$GLOBALS['config']['scale']).'"
+  <line class="'.$this->geom.'" x1="'.($x1).'" y1="'.($y1).'" x2="'.($x2).'" y2="'.($y2).'"
   style="stroke:rgb(255,0,0);stroke-width:'.$this->obj->geom->t.'"/>
 </svg>';
 		}
@@ -118,25 +118,19 @@ class PersistentGroupObject extends PreziObject {
 class ImageObject extends PreziObject {
 	function __construct($id, $type, $x, $y, $r, $s, $class, $obj){
 		parent::__construct($id, $type, $x, $y, $r, $s, $class, $obj);
+		copy($GLOBALS['contentPath'].'data/repo/'.$this->obj->source->url,$GLOBALS['config']['outputFolder'].'/media/'.$this->obj->source->url);
 	}
 	protected function getContent(){
 		if(stristr($this->obj->resource->url,'swf')){
 			$id = md5(rand(0,1000));
-			return "<!--[if IE]>
-<object id='".$id."' classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' width='".($this->obj->source['w'] * $GLOBALS['config']['scale'])."' height='".($this->obj->source['h'] * $GLOBALS['config']['scale'])."'>
-<param name='movie' value='repo/".$this->obj->source->url."'/>
-</object>
-<![endif]-->
-
-<!--[if !IE]>-->
-<object id='".$id."' type='application/x-shockwave-flash' data='repo/".$this->obj->source->url."' width='".($this->obj->source['w'] * $GLOBALS['config']['scale'])."' height='".($this->obj->source['h'] * $GLOBALS['config']['scale'])."'></object>
-<!--<![endif]-->
-<script type='text/javascript'>
-swfobject.registerObject('".$id."', '9.0.0', false);
-</script>";
+			return '<object style="width:'.($this->obj->source['w']).'px;height:'.($this->obj->source['h']).'px" data="media/'.$this->obj->source->url.'" type="application/x-shockwave-flash" >
+<param name="movie" value="media/'.$this->obj->source->url.'" />
+<param name="wmode" value="transparent"/>
+<param name="quality" value="high"/>
+</object>';
 		}
 		else{
-			return '<img src="repo/'.$this->obj->source->url.'" width="'.($this->obj->source['w'] * $GLOBALS['config']['scale']).'" height="'.($this->obj->source['h'] * $GLOBALS['config']['scale']).'" alt="" />';
+			return '<img src="media/'.$this->obj->source->url.'" width="'.($this->obj->source['w']).'" height="'.($this->obj->source['h']).'" alt="" />';
 		}
 	}
 }
@@ -144,8 +138,8 @@ swfobject.registerObject('".$id."', '9.0.0', false);
 class ButtonObject extends PreziObject {
 	function __construct($id, $type, $x, $y, $r, $s, $class, $obj){
 		parent::__construct($id, $type, $x, $y, $r, $s, $class, $obj);
-		$this->width = (float)$obj->size->w / $this->scale;
-		$this->height = (float)$obj->size->h / $this->scale;
+		$this->width = (float)$obj->size->w;
+		$this->height = (float)$obj->size->h;
 	}
 	protected function getAdditionalCss(){
 		$ret = 'width: '.$this->width.'px; height: '.$this->height.'px;';

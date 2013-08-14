@@ -8,10 +8,10 @@ class ObjectFactory {
 		$r = $obj['r'];
 		$s = $obj['s'];
 		$class = $obj['class'];
-		/*if($type == 'invisible'){
+		if($type == 'invisible'){
 			return new InvisibleObject($id, $type, $x, $y, $r, $s, $class, $obj);
 		}
-		else*/if($type == "text"){
+		elseif($type == "text"){
 			return new TextObject($id, $type, $x, $y, $r, $s, $class, $obj);
 		}
 		elseif($type == "shape"){

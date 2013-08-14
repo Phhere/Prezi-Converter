@@ -53,7 +53,7 @@ class TextObject extends PreziObject {
 		}
 		return $ret;
 	}
-	private function getTexts(){
+	protected function getContent(){
 		$ret = array();
 		$ps = $this->obj->p;
 		foreach($ps as $p){
@@ -68,11 +68,8 @@ class TextObject extends PreziObject {
 			return '<ul>'.implode("", $ret)."</ul>";
 		}
 		else{
-			return implode("<br/>", $ret);
+			return "<p class='".$this->class."'>".implode("<br/>", $ret).'</p>';
 		}
-	}
-	protected function getContent(){
-		return "<p class='".$this->class."'>".$this->getTexts()."</p>";
 	}
 }
 class InvisibleObject extends PreziObject {
@@ -95,16 +92,11 @@ class ShapeObject extends PreziObject {
 		if($this->geom == "line" || $this->geom == "arrow") {
 			list($x1,$y1) = explode(" ",$this->obj->geom->sp);
 			list($x2,$y2) = explode(" ", $this->obj->geom->ep);
-			return '<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-  <line class="'.$this->geom.'" x1="'.($x1).'" y1="'.($y1).'" x2="'.($x2).'" y2="'.($y2).'"
-  style="stroke:rgb(255,0,0);stroke-width:'.$this->obj->geom->t.'"/>
-</svg>';
+			return '<svg xmlns="http://www.w3.org/2000/svg" version="1.1"><line class="'.$this->geom.'" x1="'.($x1).'" y1="'.($y1).'" x2="'.($x2).'" y2="'.($y2).'" style="stroke:rgb(255,0,0);stroke-width:'.$this->obj->geom->t.'"/></svg>';
 		}
 		elseif($this->geom == "circle"){
-			return '<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-  <circle class="'.$this->geom.'" cx="'.$this->obj->geom->r.'" cy="'.$this->obj->geom->r.'" r="'.$this->obj->geom->r.'" stroke="black"
-  stroke-width="2" fill="none"/>
-</svg> ';
+			$fill = ($this->obj->style[0]['borderThickness'] == "NaN") ? "inherit" : "none";
+			return '<svg xmlns="http://www.w3.org/2000/svg" version="1.1"><circle class="'.$this->geom.'" cx="'.$this->obj->geom->r.'" cy="'.$this->obj->geom->r.'" r="'.$this->obj->geom->r.'" stroke="black" stroke-width="2" fill="'.$fill.'"/></svg>';
 		}
 	}
 }

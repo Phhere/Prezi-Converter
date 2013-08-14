@@ -36,8 +36,6 @@ else{
 	//fwrite($output_Handle,'<style type="text/css">');
 	//fwrite($output_Handle, $xmlDoc->style);
 	//fwrite($output_Handle,'</style>');
-
-	fwrite($output_Handle,'</head><body>');
 	//fwrite($output_Handle,'<div style="position:absolute;">');
 	$objects = $xmlDoc->{'zui-table'}->object;
 	$collecedObjects = array();

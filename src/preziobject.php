@@ -42,8 +42,8 @@ class PreziObject {
 class TextObject extends PreziObject {
 	function __construct($id, $type, $x, $y, $r, $s, $class, $obj){
 		parent::__construct($id, $type, $x, $y, $r, $s, $class, $obj);
-		$this->width = abs((float)$obj->width);
-		$this->height = abs((float)$obj->height);
+		$this->width = (float)$obj->width;
+		$this->height = (float)$obj->height;
 		$this->step = false;
 	}
 	protected function getAdditionalCss(){
@@ -75,8 +75,8 @@ class TextObject extends PreziObject {
 class InvisibleObject extends PreziObject {
 	function __construct($id, $type, $x, $y, $r, $s, $class, $obj){
 		parent::__construct($id, $type, $x, $y, $r, $s, $class, $obj);
-		$this->width = (float)$obj->size->w / $GLOBALS['config']['scale'];
-		$this->height = (float)$obj->size->h / $GLOBALS['config']['scale'];
+		$this->width = (float)$obj->size->w;
+		$this->height = (float)$obj->size->h;
 	}
 	protected function getAdditionalCss(){
 		return 'width: '.$this->width.'px; height: '.$this->height.'px;';
@@ -92,7 +92,7 @@ class ShapeObject extends PreziObject {
 		if($this->geom == "line" || $this->geom == "arrow") {
 			list($x1,$y1) = explode(" ",$this->obj->geom->sp);
 			list($x2,$y2) = explode(" ", $this->obj->geom->ep);
-			return '<svg xmlns="http://www.w3.org/2000/svg" version="1.1"><line class="'.$this->geom.'" x1="'.($x1).'" y1="'.($y1).'" x2="'.($x2).'" y2="'.($y2).'" style="stroke:rgb(255,0,0);stroke-width:'.$this->obj->geom->t.'"/></svg>';
+			return '<svg xmlns="http://www.w3.org/2000/svg" version="1.1"><line class="'.$this->geom.'" x1="'.($x1).'" y1="'.($y1).'" x2="'.($x2).'" y2="'.($y2).'" style="stroke:rgb(255,0,0);stroke-width:2;"/></svg>';
 		}
 		elseif($this->geom == "circle"){
 			$fill = ($this->obj->style[0]['borderThickness'] == "NaN") ? "inherit" : "none";
@@ -136,7 +136,7 @@ class ButtonObject extends PreziObject {
 	protected function getAdditionalCss(){
 		$ret = 'width: '.$this->width.'px; height: '.$this->height.'px;';
 		if($this->obj->type == "bracket") {
-			$ret .= 'border-left: 10px solid #ff0000;';
+			$ret .= 'border-left: 10px solid #ff0000;border-right: 10px solid #ff0000;';
 		}
 		return $ret;
 	}

@@ -3,7 +3,7 @@
 $GLOBALS['config']['config'] = array();
 $GLOBALS['config']['tmpFolder'] = './tmp/';
 $GLOBALS['config']['outputFolder'] = './output/';
-$GLOBALS['config']['scale'] = 0.1;
+$GLOBALS['config']['scale'] = 1;
 include("src/functions.php");
 include('src/preziobject.php');
 include('src/objectfactory.php');
